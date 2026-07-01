@@ -1,4 +1,4 @@
-import { useRef, useState, Suspense } from 'react';
+import { useRef, useState, Suspense, useMemo } from 'react';
 import { Canvas } from '@react-three/fiber';
 import { OrbitControls, Stars, Sparkles } from '@react-three/drei';
 import { EffectComposer, Bloom, HueSaturation, Vignette } from '@react-three/postprocessing';
@@ -15,11 +15,26 @@ import { CanvasErrorBoundary } from './components/CanvasErrorBoundary';
 import { myImages } from './data/imageData';
 import './styles/app.css';
 
+// Detect if device is mobile
+const isMobile = () => {
+  if (typeof window === 'undefined') return false;
+  return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ||
+         window.innerWidth < 768;
+};
+
 export default function App() {
   const [isStarted, setIsStarted] = useState(false);
   const [selectedCardId, setSelectedCardId] = useState(null);
   const musicRef = useRef(null);
   const selectedCard = selectedCardId ? myImages.find(img => img.url === selectedCardId) : null;
+  
+  const isMobileDevice = useMemo(() => isMobile(), []);
+  
+  // Optimize settings for mobile
+  const canvasSettings = useMemo(() => ({
+    dpr: isMobileDevice ? [1, 1] : [1, 1.5],
+    pixelRatio: isMobileDevice ? 1 : 1.5,
+  }), [isMobileDevice]);
 
   const startMusic = () => {
     if (!musicRef.current) return;
@@ -54,11 +69,11 @@ export default function App() {
       {isStarted && (
         <CanvasErrorBoundary>
           <Canvas
-            dpr={[1, 1.5]}
+            dpr={canvasSettings.dpr}
             camera={{ position: [0, 7, 19], fov: 45 }}
             gl={{
               alpha: true,
-              antialias: true,
+              antialias: !isMobileDevice,
               preserveDrawingBuffer: false,
               toneMapping: THREE.ACESFilmicToneMapping,
               toneMappingExposure: 1.18,
@@ -73,15 +88,15 @@ export default function App() {
               <color attach="background" args={['#120d40']} />
               <fog attach="fog" args={['#120d40', 30, 102]} />
 
-              <ambientLight intensity={1.0} color="#dac4ff" />
+              <ambientLight intensity={isMobileDevice ? 0.8 : 1.0} color="#dac4ff" />
               <hemisphereLight args={['#ffb3f0', '#201033', 0.72]} />
-              <directionalLight position={[5, 7, 10]} intensity={1.4} color="#ffdbff" />
-              <pointLight position={[2.8, 2.2, 3.4]} color="#ffd0ff" intensity={3.1} distance={20} />
-              <pointLight position={[-6, 3.4, 4]} color="#8b72ff" intensity={0.9} distance={26} />
-              <pointLight position={[8, -1.4, -2]} color="#ffb5ee" intensity={0.8} distance={16} />
+              <directionalLight position={[5, 7, 10]} intensity={isMobileDevice ? 1.0 : 1.4} color="#ffdbff" />
+              <pointLight position={[2.8, 2.2, 3.4]} color="#ffd0ff" intensity={isMobileDevice ? 2.0 : 3.1} distance={20} />
+              {!isMobileDevice && <pointLight position={[-6, 3.4, 4]} color="#8b72ff" intensity={0.9} distance={26} />}
+              {!isMobileDevice && <pointLight position={[8, -1.4, -2]} color="#ffb5ee" intensity={0.8} distance={16} />}
 
-              <Stars radius={190} depth={78} count={5200} factor={4.2} saturation={0.24} fade speed={0.55} />
-              <Sparkles count={260} scale={[76, 42, 76]} size={2.0} speed={0.18} color="#ffd4ff" opacity={0.72} />
+              <Stars radius={190} depth={78} count={isMobileDevice ? 2500 : 5200} factor={4.2} saturation={0.24} fade speed={0.55} />
+              {!isMobileDevice && <Sparkles count={260} scale={[76, 42, 76]} size={2.0} speed={0.18} color="#ffd4ff" opacity={0.72} />}
 
               <OrbitControls
                 autoRotate
@@ -100,7 +115,13 @@ export default function App() {
               <FloatingHearts />
 
               <EffectComposer multisampling={0}>
-                <Bloom mipmapBlur intensity={0.9} luminanceThreshold={0.18} luminanceSmoothing={0.42} resolutionScale={0.45} />
+                <Bloom 
+                  mipmapBlur 
+                  intensity={isMobileDevice ? 0.4 : 0.9} 
+                  luminanceThreshold={0.18} 
+                  luminanceSmoothing={0.42} 
+                  resolutionScale={isMobileDevice ? 0.25 : 0.45} 
+                />
                 <HueSaturation saturation={0.08} />
                 <Vignette eskil={false} offset={0.38} darkness={0.18} />
               </EffectComposer>
