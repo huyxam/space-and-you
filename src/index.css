@@ -78,3 +78,15 @@ html, body {
     }
 
 }
+/* Ép thẻ canvas của không gian 3D không bao giờ được lóe sáng */
+canvas {
+  outline: none !important;
+  -webkit-tap-highlight-color: transparent !important;
+  user-select: none !important;
+}
+
+/* Đảm bảo khung chứa không bị chớp */
+#root {
+  background-color: #050505 !important;
+  -webkit-tap-highlight-color: transparent !important;
+}
