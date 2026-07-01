@@ -1,6 +1,6 @@
 import { useFrame, useThree } from "@react-three/fiber";
-import { useRef } from "react";
-import { DoubleSide, Vector3, Euler, LinearFilter, LinearMipMapLinearFilter, Object3D } from "three";
+import { useEffect, useRef } from "react";
+import { DoubleSide, Vector3, Euler, LinearFilter, Object3D } from "three";
 import { damp3, dampE } from "maath/easing";
 import { orbitPosition } from "../math";
 
@@ -10,13 +10,17 @@ export default function ImageCard({ data, texture, selectedId, onSelect }) {
   const { gl, camera } = useThree();
   const isSelected = selectedId === data.id;
 
-  if (texture && gl?.capabilities) {
-    texture.anisotropy = gl.capabilities.getMaxAnisotropy();
-    texture.minFilter = LinearMipMapLinearFilter;
+  useEffect(() => {
+    if (!texture || !gl?.capabilities) return;
+
+    /* eslint-disable react-hooks/immutability */
+    texture.anisotropy = Math.min(gl.capabilities.getMaxAnisotropy(), 4);
+    texture.minFilter = LinearFilter;
     texture.magFilter = LinearFilter;
-    texture.generateMipmaps = true;
+    texture.generateMipmaps = false;
     texture.needsUpdate = true;
-  }
+    /* eslint-enable react-hooks/immutability */
+  }, [texture, gl]);
 
   const group = useRef();
   const meshRef = useRef();

@@ -1,7 +1,11 @@
 import { useLoader, useFrame, useThree } from "@react-three/fiber";
-import { TextureLoader, Vector3, LinearFilter, LinearMipMapLinearFilter } from "three";
-import { useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef } from "react";
+import { TextureLoader, Vector3, LinearFilter } from "three";
 import { myImages } from "../data/imageData";
+
+function seededRandom(seed) {
+  return Math.abs(Math.sin(seed) * 10000) % 1;
+}
 
 function Photo({
   url,
@@ -16,13 +20,17 @@ function Photo({
   const texture = useLoader(TextureLoader, url);
   const { gl } = useThree();
 
-  if (texture && gl?.capabilities) {
-    texture.anisotropy = gl.capabilities.getMaxAnisotropy();
-    texture.minFilter = LinearMipMapLinearFilter;
+  useEffect(() => {
+    if (!texture || !gl?.capabilities) return;
+
+    /* eslint-disable react-hooks/immutability */
+    texture.anisotropy = Math.min(gl.capabilities.getMaxAnisotropy(), 4);
+    texture.minFilter = LinearFilter;
     texture.magFilter = LinearFilter;
-    texture.generateMipmaps = true;
+    texture.generateMipmaps = false;
     texture.needsUpdate = true;
-  }
+    /* eslint-enable react-hooks/immutability */
+  }, [texture, gl]);
 
   const ref = useRef();
   const hover = useRef(false);
@@ -122,15 +130,15 @@ export default function FloatingPhotos({ onSelect }) {
 
         radius:
           rings[ring].radius +
-          (Math.random() - 0.5) * 0.5,
+          (seededRandom(i * 3 + 1) - 0.5) * 0.5,
 
         angle:
           baseAngle +
-          (Math.random() - 0.5) * 0.15,
+          (seededRandom(i * 3 + 2) - 0.5) * 0.15,
 
         height:
           rings[ring].height +
-          (Math.random() - 0.5) * 0.4,
+          (seededRandom(i * 3 + 3) - 0.5) * 0.4,
 
         speed:
           0.08 +
@@ -141,7 +149,7 @@ export default function FloatingPhotos({ onSelect }) {
           : [1.7, 2.5],
       };
     });
-  }, []);
+  }, [isMobile]);
 
   return (
     <>

@@ -1,7 +1,7 @@
 import { useRef, useState, Suspense } from 'react';
 import { Canvas } from '@react-three/fiber';
 import { OrbitControls, Stars, Sparkles } from '@react-three/drei';
-import { EffectComposer, Bloom, HueSaturation, N8AO, ToneMapping, Vignette } from '@react-three/postprocessing';
+import { EffectComposer, Bloom, HueSaturation, Vignette } from '@react-three/postprocessing';
 import * as THREE from 'three';
 
 import Intro from './components/Intro';
@@ -54,7 +54,7 @@ export default function App() {
       {isStarted && (
         <CanvasErrorBoundary>
           <Canvas
-            dpr={[1, 2]}
+            dpr={[1, 1.5]}
             camera={{ position: [0, 7, 19], fov: 45 }}
             gl={{
               alpha: true,
@@ -79,8 +79,8 @@ export default function App() {
               <pointLight position={[-6, 3.4, 4]} color="#8b72ff" intensity={0.9} distance={26} />
               <pointLight position={[8, -1.4, -2]} color="#ffb5ee" intensity={0.8} distance={16} />
 
-              <Stars radius={190} depth={78} count={9600} factor={4.2} saturation={0.24} fade speed={0.55} />
-              <Sparkles count={520} scale={[76, 42, 76]} size={2.0} speed={0.18} color="#ffd4ff" opacity={0.72} />
+              <Stars radius={190} depth={78} count={5200} factor={4.2} saturation={0.24} fade speed={0.55} />
+              <Sparkles count={260} scale={[76, 42, 76]} size={2.0} speed={0.18} color="#ffd4ff" opacity={0.72} />
 
               <OrbitControls
                 autoRotate
@@ -99,10 +99,8 @@ export default function App() {
               <FloatingHearts />
 
               <EffectComposer multisampling={0}>
-                <N8AO aoRadius={7} distanceFalloff={1.65} intensity={0.72} quality="medium" color="#10091f" />
-                <Bloom mipmapBlur intensity={1.2} luminanceThreshold={0.18} luminanceSmoothing={0.42} resolutionScale={0.5} />
+                <Bloom mipmapBlur intensity={0.9} luminanceThreshold={0.18} luminanceSmoothing={0.42} resolutionScale={0.45} />
                 <HueSaturation saturation={0.08} />
-                <ToneMapping adaptive={false} resolution={128} middleGrey={0.95} maxLuminance={9.5} averageLuminance={1.05} />
                 <Vignette eskil={false} offset={0.38} darkness={0.18} />
               </EffectComposer>
             </Suspense>

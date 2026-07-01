@@ -7,18 +7,15 @@
   align-items: center;
   background: rgba(0, 0, 0, 0.55);
 
-  /*
-    Đây là hiệu ứng tốn nhiều tài nguyên nhất.
-    Mình đã giảm từ 12px xuống 8px để nhẹ hơn.
-    Nếu vẫn còn khựng, bạn có thể giảm thêm hoặc xóa dòng này.
-  */
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
+  /* Giảm độ mờ để tránh khựng khi mở popup */
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  transform: translateZ(0);
+  will-change: opacity;
 
-  /* Thuộc tính cho hiệu ứng chuyển động */
   opacity: 0;
   pointer-events: none;
-  transition: opacity 0.35s ease-in-out;
+  transition: opacity 0.25s ease;
 }
 
 .popup-overlay.visible {
@@ -36,13 +33,15 @@
   box-shadow: 0 0 40px rgba(255, 120, 220, 0.45);
   position: relative;
 
-  /* Hiệu ứng phóng to/thu nhỏ */
-  transform: scale(0.95);
-  transition: transform 0.35s ease-in-out;
+  /* Hiệu ứng phóng to/thu nhỏ và tối ưu GPU */
+  transform: scale(0.95) translateZ(0);
+  backface-visibility: hidden;
+  will-change: transform;
+  transition: transform 0.25s ease;
 }
 
 .popup-overlay.visible .popup-content {
-  transform: scale(1);
+  transform: scale(1) translateZ(0);
 }
 
 .popup-image {
