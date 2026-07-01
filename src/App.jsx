@@ -68,6 +68,7 @@ export default function App() {
               state.gl.setClearColor(0x120d40, 1);
             }}
           >
+            <color attach="background" args={['#050505']} />
             <Suspense fallback={null}>
               <color attach="background" args={['#120d40']} />
               <fog attach="fog" args={['#120d40', 30, 102]} />
