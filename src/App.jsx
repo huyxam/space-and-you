@@ -24,11 +24,19 @@ const isMobile = () => {
 
 export default function App() {
   const [isStarted, setIsStarted] = useState(false);
+  const [isStarting, setIsStarting] = useState(false);
+  const [isCanvasReady, setIsCanvasReady] = useState(false);
   const [selectedCardId, setSelectedCardId] = useState(null);
   const musicRef = useRef(null);
   const selectedCard = selectedCardId ? myImages.find(img => img.url === selectedCardId) : null;
   
   const isMobileDevice = useMemo(() => isMobile(), []);
+  
+  const handleStartClick = () => {
+    startMusic();
+    setIsStarting(true);
+    setIsCanvasReady(false);
+  };
   
   // Optimize settings for mobile
   const canvasSettings = useMemo(() => ({
@@ -61,9 +69,15 @@ export default function App() {
 
       {!isStarted && (
         <Intro
-          onEnter={startMusic}
+          onEnter={handleStartClick}
           onStart={() => setIsStarted(true)}
         />
+      )}
+
+      {(isStarting && !isCanvasReady) && (
+        <div className="loading-overlay">
+          Đợi chút nhé...
+        </div>
       )}
 
       {isStarted && (
@@ -81,6 +95,8 @@ export default function App() {
             }}
             onCreated={(state) => {
               state.gl.setClearColor(0x120d40, 1);
+              setIsCanvasReady(true);
+              setIsStarting(false);
             }}
           >
             <color attach="background" args={['#050505']} />
