@@ -12,17 +12,21 @@ export default function Intro({ onEnter, onStart }) {
   return (
     <div className={`entry-modal ${closing ? "fade-out" : ""}`}>
       <div className="entry-stars" />
-      <div className="space-whale" aria-hidden="true">
-        <span className="whale-tail" />
-        <span className="whale-body" />
-        <span className="whale-fin" />
-        <span className="whale-eye" />
-        <span className="whale-sparkle one" />
-        <span className="whale-sparkle two" />
-      </div>
+      <img 
+        src="/images/image-removebg-preview.png" 
+        alt="cute cat" 
+        className="intro-cat-image"
+        style={{
+          width: '220px',
+          height: 'auto',
+          marginBottom: '30px',
+          filter: 'drop-shadow(0 0 18px rgba(150, 65, 255, 0.9)) drop-shadow(0 0 26px rgba(0, 215, 255, 0.45))',
+          animation: 'catFloatIntro 3.2s ease-in-out infinite'
+        }}
+      />
 
       <button className="entry-button" onClick={handleStart}>
-        Bắt đầu trải nghiệm
+        Có một vũ trụ nhỏ đang chờ em...
       </button>
     </div>
   );
