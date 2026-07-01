@@ -1,0 +1,85 @@
+.popup-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 999;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: rgba(0, 0, 0, 0.55);
+
+  /*
+    Đây là hiệu ứng tốn nhiều tài nguyên nhất.
+    Mình đã giảm từ 12px xuống 8px để nhẹ hơn.
+    Nếu vẫn còn khựng, bạn có thể giảm thêm hoặc xóa dòng này.
+  */
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+
+  /* Thuộc tính cho hiệu ứng chuyển động */
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.35s ease-in-out;
+}
+
+.popup-overlay.visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.popup-content {
+  width: 90%;
+  max-width: 520px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 26px;
+  padding: 20px;
+  box-shadow: 0 0 40px rgba(255, 120, 220, 0.45);
+  position: relative;
+
+  /* Hiệu ứng phóng to/thu nhỏ */
+  transform: scale(0.95);
+  transition: transform 0.35s ease-in-out;
+}
+
+.popup-overlay.visible .popup-content {
+  transform: scale(1);
+}
+
+.popup-image {
+  width: 100%;
+  border-radius: 18px;
+  object-fit: cover;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+}
+
+.popup-text {
+  color: white;
+  font-size: 20px;
+  text-align: center;
+  margin-top: 18px;
+  line-height: 1.6;
+  font-weight: 500;
+}
+
+.popup-close {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  border: none;
+  cursor: pointer;
+  color: white;
+  background: rgba(255, 255, 255, 0.12);
+  font-size: 18px;
+  transition: background-color 0.25s, transform 0.25s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.popup-close:hover {
+  background: rgba(255, 255, 255, 0.2);
+  transform: scale(1.1);
+}

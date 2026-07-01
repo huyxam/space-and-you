@@ -1,0 +1,590 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+
+  width: 100%;
+  height: 100%;
+
+  overflow: hidden;
+
+  background: #000;
+
+  font-family:
+    "Poppins",
+    sans-serif;
+}
+
+canvas {
+
+  width: 100% !important;
+  height: 100% !important;
+
+  display: block;
+}
+
+body {
+
+  background:
+    radial-gradient(
+      circle at center,
+      #12051c 0%,
+      #05020b 40%,
+      #000000 100%
+    );
+
+  color: white;
+}
+
+/* INTRO */
+
+.intro {
+
+  position: fixed;
+  inset: 0;
+
+  display: flex;
+  flex-direction: column;
+
+  justify-content: center;
+  align-items: center;
+
+  gap: 30px;
+
+  background:
+    radial-gradient(
+      circle,
+      rgba(255, 100, 220, 0.08),
+      #000
+    );
+
+  z-index: 99999;
+}
+
+.intro h1 {
+
+  font-size: 4rem;
+
+  text-align: center;
+
+  letter-spacing: 2px;
+
+  color: white;
+
+  text-shadow:
+    0 0 10px #ff8cff,
+    0 0 20px #ff8cff,
+    0 0 40px #ff8cff;
+
+  animation:
+    glow 2s infinite alternate;
+}
+
+.intro p {
+
+  font-size: 1.1rem;
+
+  opacity: 0.8;
+}
+
+.enter-btn {
+
+  padding:
+    16px 40px;
+
+  border: none;
+
+  border-radius: 999px;
+
+  cursor: pointer;
+
+  color: white;
+
+  font-size: 18px;
+  font-weight: 600;
+
+  background:
+    linear-gradient(
+      135deg,
+      #ff59cf,
+      #a64dff
+    );
+
+  box-shadow:
+    0 0 20px #ff59cf,
+    0 0 50px rgba(
+      255,
+      89,
+      207,
+      0.5
+    );
+
+  transition:
+    transform .3s ease,
+    box-shadow .3s ease;
+}
+
+.enter-btn:hover {
+
+  transform:
+    scale(1.05);
+
+  box-shadow:
+    0 0 30px #ff59cf,
+    0 0 80px rgba(
+      255,
+      89,
+      207,
+      0.8
+    );
+}
+
+/* Loading text */
+
+.loading {
+
+  position: fixed;
+
+  bottom: 40px;
+
+  left: 50%;
+
+  transform:
+    translateX(-50%);
+
+  color: rgba(
+    255,
+    255,
+    255,
+    0.6
+  );
+
+  font-size: 14px;
+
+  letter-spacing: 3px;
+}
+
+/* Animations */
+
+@keyframes glow {
+
+  from {
+
+    text-shadow:
+      0 0 10px #ff8cff,
+      0 0 20px #ff8cff;
+
+  }
+
+  to {
+
+    text-shadow:
+      0 0 20px #ff8cff,
+      0 0 40px #ff8cff,
+      0 0 80px #ff8cff;
+
+  }
+}
+
+/* Fade */
+
+.fade-in {
+
+  animation:
+    fadeIn 1s ease;
+}
+
+@keyframes fadeIn {
+
+  from {
+
+    opacity: 0;
+
+  }
+
+  to {
+
+    opacity: 1;
+
+  }
+}
+
+canvas {
+  touch-action: none;
+}
+
+.entry-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+  display: grid;
+  place-items: center;
+  background: rgba(8, 4, 18, 0.88);
+  backdrop-filter: blur(18px);
+  box-shadow: inset 0 0 120px rgba(0, 0, 0, 0.55);
+  overflow: hidden;
+  transition: opacity 0.76s ease, transform 0.76s ease;
+}
+
+.entry-modal.fade-out {
+  opacity: 0;
+  transform: scale(1.04);
+  pointer-events: none;
+}
+
+.entry-stars {
+  position: absolute;
+  inset: 0;
+  background-image:
+    radial-gradient(circle, rgba(255, 255, 255, 0.85) 0 1px, transparent 1px),
+    radial-gradient(circle, rgba(255, 107, 221, 0.65) 0 1px, transparent 1px);
+  background-position: 0 0, 22px 38px;
+  background-size: 92px 92px, 136px 136px;
+  opacity: 0.22;
+  animation: starDrift 18s linear infinite;
+}
+
+.space-whale {
+  position: relative;
+  width: 178px;
+  height: 108px;
+  margin-top: -108px;
+  filter: drop-shadow(0 0 18px rgba(150, 65, 255, 0.9))
+    drop-shadow(0 0 26px rgba(0, 215, 255, 0.45));
+  animation: whaleFloat 3.2s ease-in-out infinite;
+}
+
+.whale-body {
+  position: absolute;
+  right: 8px;
+  top: 28px;
+  width: 132px;
+  height: 66px;
+  border-radius: 68% 44% 52% 58%;
+  background:
+    radial-gradient(circle at 34% 36%, rgba(255, 255, 255, 0.85) 0 3px, transparent 4px),
+    radial-gradient(circle at 48% 22%, rgba(255, 235, 141, 0.95) 0 2px, transparent 3px),
+    linear-gradient(135deg, #8d2cff 0%, #194dff 45%, #27e6ff 100%);
+}
+
+.whale-tail {
+  position: absolute;
+  left: 4px;
+  top: 18px;
+  width: 66px;
+  height: 62px;
+  background: linear-gradient(135deg, #a530ff, #204cff);
+  clip-path: polygon(8% 8%, 60% 36%, 100% 0, 72% 49%, 100% 100%, 56% 67%, 0 92%, 28% 50%);
+  transform: rotate(-13deg);
+}
+
+.whale-fin {
+  position: absolute;
+  right: 64px;
+  top: 74px;
+  width: 46px;
+  height: 28px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, rgba(255, 75, 224, 0.85), rgba(95, 47, 255, 0.95));
+  transform: rotate(18deg);
+}
+
+.whale-eye {
+  position: absolute;
+  right: 30px;
+  top: 55px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #05000d;
+  box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.35);
+}
+
+.whale-sparkle {
+  position: absolute;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #fff0a8;
+  box-shadow: 0 0 14px #fff0a8;
+}
+
+.whale-sparkle.one {
+  left: 74px;
+  top: 34px;
+}
+
+.whale-sparkle.two {
+  left: 102px;
+  top: 49px;
+  width: 5px;
+  height: 5px;
+}
+
+.entry-button {
+  position: absolute;
+  top: calc(50% + 58px);
+  min-width: 132px;
+  padding: 17px 28px;
+  border: 0;
+  border-radius: 999px;
+  color: white;
+  background: linear-gradient(135deg, #ff8dcc, #ff62bc 52%, #ee8fff);
+  box-shadow:
+    0 0 22px rgba(255, 108, 196, 0.9),
+    0 0 52px rgba(255, 108, 196, 0.58);
+  cursor: pointer;
+  font-size: 17px;
+  font-weight: 800;
+  letter-spacing: 0;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.entry-button:hover {
+  transform: translateY(-2px) scale(1.04);
+  box-shadow:
+    0 0 26px rgba(255, 149, 213, 1),
+    0 0 72px rgba(255, 108, 196, 0.72);
+}
+
+@keyframes whaleFloat {
+  0%,
+  100% {
+    transform: translateY(0) rotate(-4deg);
+  }
+
+  50% {
+    transform: translateY(-12px) rotate(3deg);
+  }
+}
+
+@keyframes starDrift {
+  from {
+    transform: translateY(0);
+  }
+
+  to {
+    transform: translateY(92px);
+  }
+}
+
+@media (max-width: 768px) {
+  .space-whale {
+    width: 148px;
+    transform: scale(0.88);
+  }
+
+  .entry-button {
+    top: calc(50% + 48px);
+    padding: 15px 25px;
+    font-size: 16px;
+  }
+
+}
+
+.tiktok-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 18px;
+  pointer-events: none;
+}
+
+.tiktok-overlay__top,
+.tiktok-overlay__footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  pointer-events: auto;
+}
+
+.tiktok-user {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.tiktok-user__avatar {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: radial-gradient(circle, #ff80ff 0%, #7d2bff 100%);
+  box-shadow: 0 0 20px rgba(255, 89, 207, 0.45);
+}
+
+.tiktok-user__name {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+.tiktok-user__subtitle {
+  margin: 4px 0 0;
+  color: rgba(255, 255, 255, 0.75);
+  font-size: 0.88rem;
+  line-height: 1.4;
+}
+
+.tiktok-follow {
+  padding: 10px 16px;
+  border: none;
+  border-radius: 999px;
+  background: #ff2d85;
+  color: white;
+  font-weight: 700;
+  letter-spacing: 0.6px;
+  cursor: pointer;
+  pointer-events: auto;
+}
+
+.tiktok-overlay__caption {
+  max-width: 560px;
+  margin: 0 auto;
+  padding: 18px 20px;
+  border-radius: 24px;
+  background: rgba(0, 0, 0, 0.5);
+  color: white;
+  font-size: 1rem;
+  line-height: 1.6;
+  pointer-events: auto;
+}
+
+.tiktok-hashtags {
+  display: block;
+  margin-top: 8px;
+  color: #ffb3ff;
+}
+
+.tiktok-overlay__footer {
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.tiktok-sound {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 16px;
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.55);
+  color: white;
+  font-size: 0.95rem;
+  pointer-events: auto;
+}
+
+.tiktok-music-note {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #ff59cf, #7f2fff);
+}
+
+.tiktok-actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  pointer-events: auto;
+}
+
+.tiktok-btn {
+  padding: 10px 14px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 999px;
+  color: white;
+  background: rgba(255, 255, 255, 0.06);
+  cursor: pointer;
+  font-weight: 600;
+}
+
+@media (max-width: 768px) {
+  .tiktok-overlay {
+    padding: 12px;
+  }
+
+  .tiktok-overlay__top,
+  .tiktok-overlay__footer {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .tiktok-follow,
+  .tiktok-btn {
+    width: 100%;
+  }
+
+  .tiktok-overlay__caption {
+    width: 100%;
+    padding: 14px 16px;
+    font-size: 0.96rem;
+  }
+}
+
+.popup-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 100000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: rgba(8, 4, 18, 0.88);
+  backdrop-filter: blur(18px);
+  animation: fadeIn 0.5s ease;
+}
+
+.popup-content {
+  position: relative;
+  background: rgba(20, 15, 40, 0.85);
+  padding: 20px;
+  border-radius: 24px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
+  width: 90%;
+  max-width: 500px;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+.popup-image {
+  width: 100%;
+  border-radius: 16px;
+  display: block;
+}
+
+.popup-text {
+  color: #f0e8ff;
+  text-align: center;
+  margin-top: 16px;
+  font-size: 18px;
+  line-height: 1.6;
+}
+
+.popup-close {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  width: 32px;
+  height: 32px;
+  border: none;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.15);
+  color: white;
+  font-size: 18px;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.popup-close:hover {
+  background: rgba(255, 255, 255, 0.25);
+}
