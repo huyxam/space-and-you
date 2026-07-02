@@ -43,18 +43,17 @@ export default function FloatingHearts() {
     return Array.from({ length: 12 }, (_, index) => {
       const layer = index % 3;
       const angle = (index / 12) * Math.PI * 2 + layer * 0.34;
-      const xRadius = 6.8 + layer * 3.2 + (noise(index + 1) - 0.5) * 1.3;
-      const zRadius = 3.8 + layer * 1.9 + (noise(index + 2) - 0.5) * 0.8;
+      const radius = 6.8 + layer * 3.2 + (noise(index + 1) - 0.5) * 1.3;
 
       return {
         angle,
-        xRadius,
-        zRadius,
+        xRadius: radius,
+        zRadius: radius,
         y: (noise(index + 3) - 0.5) * 2.2,
         speed: 0.035 + layer * 0.012,
         scale: 0.42 + noise(index + 4) * 0.18,
         offset: noise(index + 5) * Math.PI * 2,
-        position: [Math.cos(angle) * xRadius, 0, Math.sin(angle) * zRadius],
+        position: [Math.cos(angle) * radius, 0, Math.sin(angle) * radius],
       };
     });
   }, []);

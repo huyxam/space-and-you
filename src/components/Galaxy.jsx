@@ -31,8 +31,8 @@ function OrbitalDust({ layers }) {
           const orbit = {
             ...layer,
             baseAngle: angle,
-            xRadius: layer.xRadius + radialOffset,
-            zRadius: layer.zRadius + radialOffset * 0.62,
+            xRadius: layer.radius + radialOffset,
+            zRadius: layer.radius + radialOffset,
             y: heightOffset,
             speed: layer.speed * (kind === "fine" ? 0.92 : 0.82),
             floatSpeed: 0.42 + noise(seed + 4) * 0.28,
@@ -94,8 +94,8 @@ function OrbitalDust({ layers }) {
         const orbit = {
           ...dustLayer.layer,
           baseAngle: angle,
-          xRadius: dustLayer.layer.xRadius + radialOffset,
-          zRadius: dustLayer.layer.zRadius + radialOffset * 0.62,
+          xRadius: dustLayer.layer.radius + radialOffset,
+          zRadius: dustLayer.layer.radius + radialOffset,
           y: heightOffset,
           speed: dustLayer.layer.speed * (dustLayer.kind === "fine" ? 0.92 : 0.82),
           floatSpeed: 0.44,
@@ -222,12 +222,13 @@ function OrbitalRocks({ layers }) {
       const layerPick = Math.pow(noise(index * 3 + 1), 1.7);
       const layerIndex = Math.min(layers.length - 1, Math.floor(layerPick * layers.length));
       const layer = layers[layerIndex];
+      const radialOffset = (noise(index * 7 + 3) - 0.5) * layer.dustWidth * 1.35;
 
       return {
         ...layer,
         baseAngle: noise(index * 5 + 2) * Math.PI * 2,
-        xRadius: layer.xRadius + (noise(index * 7 + 3) - 0.5) * layer.dustWidth * 1.35,
-        zRadius: layer.zRadius + (noise(index * 11 + 4) - 0.5) * layer.dustWidth * 0.78,
+        xRadius: layer.radius + radialOffset,
+        zRadius: layer.radius + radialOffset,
         y: (noise(index * 13 + 5) - 0.5) * layer.dustHeight * 1.8,
         speed: layer.speed * (0.72 + noise(index * 17 + 6) * 0.16),
         floatSpeed: 0.46 + noise(index * 19 + 7) * 0.2,
@@ -274,12 +275,12 @@ function OrbitalRocks({ layers }) {
 export default function Galaxy({ selectedCardId, onCardSelect }) {
   const layers = useMemo(
     () => [
-      { xRadius: 5.9, zRadius: 3.35, speed: 0.18, size: 1.04, dustWidth: 2.25, dustHeight: 0.58 },
-      { xRadius: 7.5, zRadius: 4.25, speed: 0.148, size: 0.98, dustWidth: 2.45, dustHeight: 0.66 },
-      { xRadius: 9.2, zRadius: 5.2, speed: 0.118, size: 0.92, dustWidth: 2.65, dustHeight: 0.74 },
-      { xRadius: 10.9, zRadius: 6.15, speed: 0.092, size: 0.84, dustWidth: 2.9, dustHeight: 0.84 },
-      { xRadius: 12.6, zRadius: 7.1, speed: 0.072, size: 0.78, dustWidth: 3.15, dustHeight: 0.94 },
-      { xRadius: 14.3, zRadius: 8.05, speed: 0.056, size: 0.72, dustWidth: 3.4, dustHeight: 1.04 },
+      { radius: 5.9, speed: 0.18, size: 1.04, dustWidth: 2.25, dustHeight: 0.58 },
+      { radius: 7.5, speed: 0.148, size: 0.98, dustWidth: 2.45, dustHeight: 0.66 },
+      { radius: 9.2, speed: 0.118, size: 0.92, dustWidth: 2.65, dustHeight: 0.74 },
+      { radius: 10.9, speed: 0.092, size: 0.84, dustWidth: 2.9, dustHeight: 0.84 },
+      { radius: 12.6, speed: 0.072, size: 0.78, dustWidth: 3.15, dustHeight: 0.94 },
+      { radius: 14.3, speed: 0.056, size: 0.72, dustWidth: 3.4, dustHeight: 1.04 },
     ],
     []
   );
@@ -310,8 +311,8 @@ export default function Galaxy({ selectedCardId, onCardSelect }) {
         ...layer,
         layerIndex,
         baseAngle,
-        xRadius: layer.xRadius + bandOffset,
-        zRadius: layer.zRadius + bandOffset * 0.58 + (noise(index * 5 + 3) - 0.5) * 0.34,
+        xRadius: layer.radius + bandOffset,
+        zRadius: layer.radius + bandOffset,
         y: (noise(index * 7 + 4) - 0.5) * layer.dustHeight * 1.1 + (indexInCluster - 1) * 0.18,
         speed: layer.speed * (0.92 + noise(index * 11 + 5) * 0.12),
         floatSpeed: 0.5 + noise(index * 13 + 6) * 0.22,
